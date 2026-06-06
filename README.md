@@ -4,7 +4,6 @@
 
 [![Build Native Libs](https://github.com/traitimtrongvag/Android-Imgui-Template/actions/workflows/build-native.yml/badge.svg)](https://github.com/traitimtrongvag/Android-Imgui-Template/actions/workflows/build-native.yml)
 ![Android NDK](https://img.shields.io/badge/NDK-r27-brightgreen?logo=android)
-![License](https://img.shields.io/github/license/traitimtrongvag/Android-Imgui-Template)
 ![ImGui](https://img.shields.io/badge/ImGui-1.90-blue?logo=github)
 ![Zygisk](https://img.shields.io/badge/Zygisk-Module-orange)
 ![GitHub last commit](https://img.shields.io/github/last-commit/traitimtrongvag/Android-Imgui-Template)
