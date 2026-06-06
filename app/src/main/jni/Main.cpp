@@ -751,7 +751,7 @@ void* Init_Thread(void*) {
 
 /* This is the Input Hook part used for UI testing.
  * You can follow the latest changes at:
- * https://github.com/traitimtrongvag/Amdroid-ImGui-Template/tree/Test-UI
+ * https://github.com/traitimtrongvag/Android-Imgui-Template/tree/Test-UI
  */
 
 // /////////////////////////////////////////////////////////////////////////////
