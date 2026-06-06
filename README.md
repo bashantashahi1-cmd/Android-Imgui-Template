@@ -9,9 +9,6 @@ https://github.com/user-attachments/assets/816113d9-611d-4909-a08e-0f4e8ab6d03b
 ### Requirements
 
 - Android NDK r27 (ndk;27.0.12077973)
-- Android SDK with build-tools
-- Java 17
-- A Zygisk-capable root environment on your test device (Magisk + Zygisk enabled)
 
 ### Build Locally
 
@@ -65,6 +62,12 @@ This project is intended strictly for **educational and research purposes**.
 The author(s) are **not responsible** for any misuse, damage, account bans, legal consequences, or other issues that may arise from using or modifying this template. By using this project, you accept full responsibility for your own actions.
 
 Do not use this template to harm others, violate game terms of service, or engage in any illegal activity.
+
+---
+
+## Support
+
+If you have any questions or issues regarding this project, feel free to open an [Issue](https://github.com/traitimtrongvag/Android-ImGui-Template/issues) or contact me via email at [phucan@tutamail.com](mailto:phucan@tutamail.com).
 
 ---
 
