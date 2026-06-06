@@ -133,7 +133,7 @@ EGLBoolean _eglSwapBuffers(EGLDisplay dpy, EGLSurface surface) {
         io.KeyMap[ImGuiKey_Home]       = 122;
         io.KeyMap[ImGuiKey_End]        = 123;
 
-        ImGui_ImplOpenGL3_Init(OBFUSCATE("#version 300 es"));
+        ImGui_ImplOpenGL3_Init(OBFUSCATE("#version 1.0"));
         ImGui::GetStyle().ScaleAllSizes(3.0f);
         LoadSaveLoadMenu();
         setup = true;
