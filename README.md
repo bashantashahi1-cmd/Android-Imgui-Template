@@ -51,7 +51,7 @@ Push to main or master (or trigger manually from the Actions tab). The workflow 
 
 The included GitHub Actions workflow (.github/workflows/build-native.yml) build supported ABIs arm64-v8a on every push and exposes the resulting .so files as a downloadable artifact. No local NDK installation is required for a CI build.
 
-You can check the test build I uploaded at: [Actions](https://github.com/gasleakdetector/gasleakdetector/actions/)
+You can check the test build I uploaded at: [Actions](https://github.com/traitimtrongvag/Android-Imgui-Template/actions/)
 
 ---
 
