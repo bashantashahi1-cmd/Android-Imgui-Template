@@ -1,0 +1,46 @@
+name: Build Native
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android NDK
+        run: |
+          sdkmanager "ndk;27.0.12077973"
+
+      - name: Build Native Libraries
+        run: |
+          export ANDROID_NDK_HOME=$ANDROID_SDK_ROOT/ndk/27.0.12077973
+
+          $ANDROID_NDK_HOME/ndk-build \
+            NDK_PROJECT_PATH=app/src/main \
+            APP_BUILD_SCRIPT=app/src/main/jni/Android.mk \
+            NDK_APPLICATION_MK=app/src/main/jni/Application.mk
+
+      - name: Upload .so Files
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-libs
+          path: |
+            app/src/main/libs/**/*.so
+            app/src/main/jniLibs/**/*.so
