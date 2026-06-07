@@ -493,8 +493,13 @@ EGLBoolean _eglSwapBuffers(EGLDisplay dpy, EGLSurface surface) {
                         static bool example1 = false, example2 = false;
                         if (ImGui::BeginTable(OBFUSCATE("##split_table1"), 2, ImGuiTableFlags_BordersInnerV)) {
                             ImGui::TableNextRow();
-                            ImGui::TableSetColumnIndex(0); ImGui::Checkbox(OBFUSCATE("Example 1"), &example1);
-                            ImGui::TableSetColumnIndex(1); ImGui::Checkbox(OBFUSCATE("Example 2"), &example2);
+                            ImGui::TableSetColumnIndex(0);
+                            {
+                                ImGui::Checkbox(OBFUSCATE("Example 1"), &example1);
+                            }
+                            ImGui::TableSetColumnIndex(1);{
+                                ImGui::Checkbox(OBFUSCATE("Example 2"), &example2);
+                            }
                             ImGui::EndTable();
                         }
                     }
@@ -502,8 +507,14 @@ EGLBoolean _eglSwapBuffers(EGLDisplay dpy, EGLSurface surface) {
                         static bool example3 = false, example4 = false;
                         if (ImGui::BeginTable(OBFUSCATE("##split_table2"), 2, ImGuiTableFlags_BordersInnerV)) {
                             ImGui::TableNextRow();
-                            ImGui::TableSetColumnIndex(0); ImGui::Checkbox(OBFUSCATE("Example 3"), &example3);
-                            ImGui::TableSetColumnIndex(1); ImGui::Checkbox(OBFUSCATE("Example 4"), &example4);
+                            ImGui::TableSetColumnIndex(0);
+                            {
+                                ImGui::Checkbox(OBFUSCATE("Example 3"), &example3);
+                            }
+                            ImGui::TableSetColumnIndex(1);
+                            {
+                                ImGui::Checkbox(OBFUSCATE("Example 4"), &example4);
+                            }
                             ImGui::EndTable();
                         }
                     }
@@ -511,8 +522,14 @@ EGLBoolean _eglSwapBuffers(EGLDisplay dpy, EGLSurface surface) {
                         static bool example5 = false, example6 = false;
                         if (ImGui::BeginTable(OBFUSCATE("##split_table3"), 2, ImGuiTableFlags_BordersInnerV)) {
                             ImGui::TableNextRow();
-                            ImGui::TableSetColumnIndex(0); ImGui::Checkbox(OBFUSCATE("Example 5"), &example5);
-                            ImGui::TableSetColumnIndex(1); ImGui::Checkbox(OBFUSCATE("Example 6"), &example6);
+                            ImGui::TableSetColumnIndex(0); 
+                            {
+                                ImGui::Checkbox(OBFUSCATE("Example 5"), &example5);
+                            }
+                            ImGui::TableSetColumnIndex(1);
+                            {
+                                ImGui::Checkbox(OBFUSCATE("Example 6"), &example6);
+                            }
                             ImGui::EndTable();
                         }
                     }
@@ -520,8 +537,14 @@ EGLBoolean _eglSwapBuffers(EGLDisplay dpy, EGLSurface surface) {
                         static bool example7 = false, example8 = false;
                         if (ImGui::BeginTable(OBFUSCATE("##split_table4"), 2, ImGuiTableFlags_BordersInnerV)) {
                             ImGui::TableNextRow();
-                            ImGui::TableSetColumnIndex(0); ImGui::Checkbox(OBFUSCATE("Example 7"), &example7);
-                            ImGui::TableSetColumnIndex(1); ImGui::Checkbox(OBFUSCATE("Example 8"), &example8);
+                            ImGui::TableSetColumnIndex(0); 
+                            {
+                                ImGui::Checkbox(OBFUSCATE("Example 7"), &example7);
+                            }
+                            ImGui::TableSetColumnIndex(1);
+                            {
+                                ImGui::Checkbox(OBFUSCATE("Example 8"), &example8);
+                            }
                             ImGui::EndTable();
                         }
                     }
@@ -529,8 +552,14 @@ EGLBoolean _eglSwapBuffers(EGLDisplay dpy, EGLSurface surface) {
                         static bool example9 = false, example10 = false;
                         if (ImGui::BeginTable(OBFUSCATE("##split_table5"), 2, ImGuiTableFlags_BordersInnerV)) {
                             ImGui::TableNextRow();
-                            ImGui::TableSetColumnIndex(0); ImGui::Checkbox(OBFUSCATE("Example 9"),  &example9);
-                            ImGui::TableSetColumnIndex(1); ImGui::Checkbox(OBFUSCATE("Example 10"), &example10);
+                            ImGui::TableSetColumnIndex(0);
+                            {
+                                ImGui::Checkbox(OBFUSCATE("Example 9"),  &example9);
+                            }
+                            ImGui::TableSetColumnIndex(1);
+                            {
+                                ImGui::Checkbox(OBFUSCATE("Example 10"), &example10);
+                            }
                             ImGui::EndTable();
                         }
                     }
