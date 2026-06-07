@@ -72,7 +72,7 @@ LOCAL_SRC_FILES := \
     AnAn/Tools/Substrate/SubstratePosixMemory.cpp \
     AnAn/Tools/Substrate/SymbolFinder.cpp \
     And64InlineHook/And64InlineHook.cpp \
-    
+	# Zygisk.hpp    
 
 LOCAL_STATIC_LIBRARIES := libdobby libcurl libssl libcrypto libfoxcheats
 LOCAL_CPP_FEATURES := exceptions
