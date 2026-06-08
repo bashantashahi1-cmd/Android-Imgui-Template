@@ -10,6 +10,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout
@@ -47,12 +49,12 @@ jobs:
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          rm -rf app/src/main/libs
           git add -f app/src/main/jniLibs/**/*.so
-          git add -f app/src/main/libs/**/*.so
           if git diff --staged --quiet; then
             exit 0
           else
-            git commit -m "Auto update native libraries [skip ci]"
+            git commit -m "Update native libraries [skip ci]"
             git push
           fi
 
