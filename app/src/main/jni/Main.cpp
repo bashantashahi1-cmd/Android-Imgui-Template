@@ -35,25 +35,51 @@ static auto  startTime            = std::chrono::steady_clock::now();
 static bool  attemptedAutoLogin   = false; 
 
 void ShowLoginSuccess() {
-    ImGui::Begin(OBFUSCATE("Login Success"), nullptr,
-        ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+    ImGuiIO& io = ImGui::GetIO();
+    ImVec2 windowSize(500, 250);
+    ImVec2 windowPos((io.DisplaySize.x - windowSize.x) * 0.5f,
+                     (io.DisplaySize.y - windowSize.y) * 0.5f);
 
+    ImGui::SetNextWindowPos(windowPos, ImGuiCond_Always);
+    ImGui::SetNextWindowSize(windowSize, ImGuiCond_Always);
+
+    ImGui::Begin(OBFUSCATE("Login Success"), nullptr,
+                 ImGuiWindowFlags_NoResize |
+                 ImGuiWindowFlags_NoMove |
+                 ImGuiWindowFlags_NoTitleBar |
+                 ImGuiWindowFlags_NoCollapse);
+
+    float windowWidth = ImGui::GetWindowWidth();
+    
+    ImGui::SetCursorPosY(40);
+    float textWidth = ImGui::CalcTextSize(OBFUSCATE("Login successful")).x;
+    ImGui::SetCursorPosX((windowWidth - textWidth) * 0.5f);
     ImGui::TextColored(ImVec4(0, 1, 0, 1), OBFUSCATE("Login successful"));
 
     auto currentTime = std::chrono::steady_clock::now();
     std::chrono::duration<float> elapsedTime = currentTime - startTime;
     const float countdownTime = 7.0f;
     progress = 1.0f - (elapsedTime.count() / countdownTime);
+    
     if (progress <= 0.0f) {
-        progress         = 0.0f;
+        progress = 0.0f;
         showLoginSuccess = false;
         ImGui::End();
         return;
     }
 
+    ImGui::SetCursorPosY(100);
+    ImGui::SetCursorPosX((windowWidth - 300) * 0.5f);
     ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0, 1, 0, 1));
-    ImGui::ProgressBar(progress, ImVec2(200, 5));
+    ImGui::ProgressBar(progress, ImVec2(300, 10));
     ImGui::PopStyleColor();
+
+    ImGui::SetCursorPosY(170);
+    ImGui::SetCursorPosX((windowWidth - 100) * 0.5f);
+    
+    if (ImGui::Button(OBFUSCATE("OK"), ImVec2(100, 45))) {
+        showLoginSuccess = false;
+    }
 
     ImGui::End();
 }
