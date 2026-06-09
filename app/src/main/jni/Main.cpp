@@ -35,32 +35,108 @@ static auto  startTime            = std::chrono::steady_clock::now();
 static bool  attemptedAutoLogin   = false; 
 
 void ShowLoginSuccess() {
+    static float animProgress = 0.0f;
+    static bool  closing      = false;
+    static bool  wasShowing   = false;
+
     ImGuiIO& io = ImGui::GetIO();
-    ImVec2 windowSize(500, 250);
-    ImVec2 windowPos((io.DisplaySize.x - windowSize.x) * 0.5f,
-                     (io.DisplaySize.y - windowSize.y) * 0.5f);
 
-    ImGui::SetNextWindowPos(windowPos, ImGuiCond_Always);
-    ImGui::SetNextWindowSize(windowSize, ImGuiCond_Always);
+    if (showLoginSuccess && !wasShowing) {
+        animProgress = 0.0f;
+        closing      = false;
+    }
+    wasShowing = showLoginSuccess;
 
-    ImGui::Begin(OBFUSCATE("Login Success"), nullptr,
-                 ImGuiWindowFlags_NoResize |
-                 ImGuiWindowFlags_NoMove |
-                 ImGuiWindowFlags_NoTitleBar |
-                 ImGuiWindowFlags_NoCollapse);
+    const float openSpeed  = 2.8f;
+    const float closeSpeed = 3.5f;
 
-    float windowWidth = ImGui::GetWindowWidth();
-    
-    ImGui::SetCursorPosY(50);
-    float textWidth = ImGui::CalcTextSize(OBFUSCATE("Login successful")).x;
-    ImGui::SetCursorPosX((windowWidth - textWidth) * 0.5f);
-    ImGui::TextColored(ImVec4(0, 1, 0, 1), OBFUSCATE("Login successful"));
+    if (!closing) {
+        animProgress += io.DeltaTime * openSpeed;
+        if (animProgress > 1.0f) animProgress = 1.0f;
+    } else {
+        animProgress -= io.DeltaTime * closeSpeed;
+        if (animProgress <= 0.0f) {
+            animProgress     = 0.0f;
+            closing          = false;
+            wasShowing       = false;
+            showLoginSuccess = false;
+            return;
+        }
+    }
 
-    ImGui::SetCursorPosY(120);
-    ImGui::SetCursorPosX((windowWidth - 100) * 0.5f);
-    
-    if (ImGui::Button(OBFUSCATE("OK"), ImVec2(100, 45))) {
-        showLoginSuccess = false;
+    if (animProgress <= 0.0f) return;
+
+    float t = animProgress * animProgress * (3.0f - 2.0f * animProgress);
+
+    const float fullW = 400.0f;
+    const float fullH = 180.0f;
+    const float kBW   = 100.0f;
+    const float kBH   = 40.0f;
+
+    ImVec2 center(io.DisplaySize.x * 0.5f, io.DisplaySize.y * 0.5f);
+    ImVec2 wPos(center.x - fullW * 0.5f, center.y - fullH * 0.5f);
+    ImVec2 wEnd(wPos.x + fullW, wPos.y + fullH);
+
+    float halfVisible = (fullW * 0.5f) * t;
+    float clipX0 = center.x - halfVisible;
+    float clipX1 = center.x + halfVisible;
+
+    ImDrawList* dl = ImGui::GetForegroundDrawList();
+    dl->PushClipRect(ImVec2(clipX0, wPos.y), ImVec2(clipX1, wEnd.y), false);
+
+    dl->AddRectFilled(wPos, wEnd,
+        ImGui::GetColorU32(ImVec4(0.1f, 0.1f, 0.15f, 0.95f)), 10.0f);
+    dl->AddRect(wPos, wEnd,
+        ImGui::GetColorU32(ImVec4(0.3f, 0.3f, 0.5f, 1.0f)), 10.0f, 0, 2.0f);
+
+    if (t > 0.4f) {
+        float alpha = (t - 0.4f) / 0.6f;
+        if (alpha > 1.0f) alpha = 1.0f;
+
+        const char* msg = OBFUSCATE("Login successful!");
+        ImVec2 mSz = ImGui::CalcTextSize(msg);
+        dl->AddText(ImVec2(wPos.x + (fullW - mSz.x) * 0.5f, wPos.y + 28.0f),
+            ImGui::GetColorU32(ImVec4(1.0f, 1.0f, 1.0f, alpha)), msg);
+
+        const char* title = OBFUSCATE("Welcom to Menu Mod");
+        ImVec2 tSz = ImGui::CalcTextSize(title);
+        dl->AddText(ImVec2(wPos.x + (fullW - tSz.x) * 0.5f, wPos.y + 76.0f),
+            ImGui::GetColorU32(ImVec4(1.0f, 1.0f, 1.0f, alpha)), title);
+
+        ImVec2 btnMin(center.x - kBW * 0.5f, wPos.y + 128.0f);
+        ImVec2 btnMax(btnMin.x + kBW, btnMin.y + kBH);
+
+        bool hovered = ImGui::IsMouseHoveringRect(btnMin, btnMax, false);
+        ImVec4 btnCol = hovered
+            ? ImVec4(0.35f, 0.35f, 0.6f, alpha)
+            : ImVec4(0.25f, 0.25f, 0.45f, alpha);
+        dl->AddRectFilled(btnMin, btnMax, ImGui::GetColorU32(btnCol), 6.0f);
+        dl->AddRect(btnMin, btnMax,
+            ImGui::GetColorU32(ImVec4(0.5f, 0.5f, 0.8f, alpha)), 6.0f, 0, 1.5f);
+
+        const char* okLabel = OBFUSCATE("OK");
+        ImVec2 okSz = ImGui::CalcTextSize(okLabel);
+        dl->AddText(
+            ImVec2(btnMin.x + (kBW - okSz.x) * 0.5f, btnMin.y + (kBH - okSz.y) * 0.5f),
+            ImGui::GetColorU32(ImVec4(1.0f, 1.0f, 1.0f, alpha)), okLabel);
+    }
+
+    dl->PopClipRect();
+
+    ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
+    ImGui::SetNextWindowSize(io.DisplaySize, ImGuiCond_Always);
+    ImGui::SetNextWindowBgAlpha(0.0f);
+    ImGui::Begin(OBFUSCATE("##LoginSuccessHitArea"), nullptr,
+        ImGuiWindowFlags_NoTitleBar      | ImGuiWindowFlags_NoResize       |
+        ImGuiWindowFlags_NoMove          | ImGuiWindowFlags_NoCollapse      |
+        ImGuiWindowFlags_NoScrollbar     | ImGuiWindowFlags_NoScrollWithMouse |
+        ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoBringToFrontOnFocus |
+        ImGuiWindowFlags_NoInputs * (t <= 0.4f)); 
+    if (t > 0.4f) {
+        ImVec2 btnMin(center.x - kBW * 0.5f, wPos.y + 128.0f);
+        ImGui::SetCursorScreenPos(btnMin);
+        if (ImGui::InvisibleButton(OBFUSCATE("##OKBtn"), ImVec2(kBW, kBH)))
+            closing = true;
     }
 
     ImGui::End();
