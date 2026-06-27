@@ -1,4 +1,4 @@
-name: Build KPM + Zygisk Module
+name: Build oooM + Zygisk Module
 
 on:
   push:
