@@ -1,5 +1,13 @@
 LOCAL_PATH := $(call my-dir)
 
+# Build native_app_glue
+include $(CLEAR_VARS)
+LOCAL_MODULE := android_native_app_glue
+LOCAL_SRC_FILES := $(ANDROID_NDK_HOME)/sources/android/native_app_glue/android_native_app_glue.c
+LOCAL_EXPORT_C_INCLUDES := $(ANDROID_NDK_HOME)/sources/android/native_app_glue
+include $(BUILD_STATIC_LIBRARY)
+
+# Build ffmod
 include $(CLEAR_VARS)
 LOCAL_MODULE := ffmod
 LOCAL_SRC_FILES := src/main.cpp src/menu.cpp src/ioctl_client.cpp src/gesture.cpp src/hooks.cpp
@@ -9,6 +17,7 @@ LOCAL_LDLIBS := -landroid -lEGL -lGLESv2 -llog -lz
 LOCAL_CPPFLAGS := -std=c++17 -fno-rtti -fno-exceptions -O2
 include $(BUILD_SHARED_LIBRARY)
 
+# ImGui static library
 include $(CLEAR_VARS)
 LOCAL_MODULE := imgui
 LOCAL_SRC_FILES := src/imgui/imgui.cpp src/imgui/imgui_draw.cpp src/imgui/imgui_widgets.cpp src/imgui/imgui_tables.cpp src/imgui/backends/imgui_impl_android.cpp src/imgui/backends/imgui_impl_opengl3.cpp
