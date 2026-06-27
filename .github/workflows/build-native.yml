@@ -1,7 +1,7 @@
 name: Build Native
 
 on:
-  action:
+  push:
     branches:
       - main
       - master
