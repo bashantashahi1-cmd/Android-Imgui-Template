@@ -9,7 +9,9 @@ enum Cmd {
     CMD_RECOIL,
     CMD_SPEED,
     CMD_TP_FORWARD,
-    CMD_UNDERGROUND
+    CMD_TP_DIST,
+    CMD_UNDERGROUND,
+    CMD_TP_ENEMY
 };
 
 void send_ioctl(int cmd, int val);
