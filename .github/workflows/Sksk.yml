@@ -1,7 +1,7 @@
 name: Build KPM + Zygisk Module
 
 on:
-  push:
+  action:
     tags:
       - 'v*'
   workflow_dispatch:
