@@ -6,22 +6,22 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-kpm:
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install cross-compiler
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu
-      - name: Build KPM
-        run: |
-          cd kpm
-          make CROSS_COMPILE=aarch64-linux-gnu-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: kpm
-          path: kpm/*.kpm
+ build-kpm:
+  runs-on: ubuntu-22.04
+  steps:
+    - uses: actions/checkout@v4
+    - name: Install cross-compiler
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu
+    - name: Build KPM
+      run: |
+        cd kpm
+        make CROSS_COMPILE=aarch64-linux-gnu-
+    - uses: actions/upload-artifact@v4
+      with:
+        name: kpm
+        path: kpm/*.ko
 
   build-zygisk:
     runs-on: ubuntu-22.04
