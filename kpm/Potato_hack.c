@@ -1,4 +1,3 @@
-// potato_hack.c – Standalone KPM (no KernelPatch headers needed)
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/fs.h>
@@ -12,31 +11,17 @@
 #define DEVICE_NAME "potato_hack"
 #define CLASS_NAME  "potato"
 
-// KPM metadata (using standard module macros)
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Potato");
 MODULE_DESCRIPTION("Kernel hack with ioctl");
 MODULE_VERSION("1.0.0");
 
-// ioctl commands
 #define POTATO_IOCTL_SET_SPIN        _IOW('p', 1, int)
 #define POTATO_IOCTL_SET_SPIN_SPEED  _IOW('p', 2, int)
-#define POTATO_IOCTL_SET_DRAG        _IOW('p', 3, int)
-#define POTATO_IOCTL_SET_FOV         _IOW('p', 4, int)
-#define POTATO_IOCTL_SET_RECOIL      _IOW('p', 5, int)
-#define POTATO_IOCTL_SET_SPEED       _IOW('p', 6, float)
-#define POTATO_IOCTL_SET_TP_FORWARD  _IOW('p', 7, int)
-#define POTATO_IOCTL_SET_TP_DIST     _IOW('p', 8, float)
-#define POTATO_IOCTL_SET_UNDERGROUND _IOW('p', 9, int)
 
 static struct hack_config {
-    bool spin; int spin_sps;
-    bool drag; int fov;
-    bool recoil;
-    bool spread;
-    bool speed; float speed_mult;
-    bool tp_forward; float tp_dist;
-    bool underground;
+    bool spin;
+    int spin_sps;
 } cfg = {0};
 
 static int major_num;
@@ -45,7 +30,7 @@ static struct device *dev = NULL;
 static struct task_struct *thread = NULL;
 
 static long potato_ioctl(struct file *file, unsigned int cmd, unsigned long arg) {
-    int ival; float fval;
+    int ival;
     switch (cmd) {
         case POTATO_IOCTL_SET_SPIN:
             if (copy_from_user(&ival, (void __user *)arg, sizeof(ival))) return -EFAULT;
@@ -55,35 +40,6 @@ static long potato_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
         case POTATO_IOCTL_SET_SPIN_SPEED:
             if (copy_from_user(&ival, (void __user *)arg, sizeof(ival))) return -EFAULT;
             cfg.spin_sps = ival;
-            break;
-        case POTATO_IOCTL_SET_DRAG:
-            if (copy_from_user(&ival, (void __user *)arg, sizeof(ival))) return -EFAULT;
-            cfg.drag = !!ival;
-            break;
-        case POTATO_IOCTL_SET_FOV:
-            if (copy_from_user(&ival, (void __user *)arg, sizeof(ival))) return -EFAULT;
-            cfg.fov = ival;
-            break;
-        case POTATO_IOCTL_SET_RECOIL:
-            if (copy_from_user(&ival, (void __user *)arg, sizeof(ival))) return -EFAULT;
-            cfg.recoil = !!ival;
-            break;
-        case POTATO_IOCTL_SET_SPEED:
-            if (copy_from_user(&fval, (void __user *)arg, sizeof(fval))) return -EFAULT;
-            cfg.speed = (fval > 0.1f);
-            cfg.speed_mult = fval;
-            break;
-        case POTATO_IOCTL_SET_TP_FORWARD:
-            if (copy_from_user(&ival, (void __user *)arg, sizeof(ival))) return -EFAULT;
-            cfg.tp_forward = !!ival;
-            break;
-        case POTATO_IOCTL_SET_TP_DIST:
-            if (copy_from_user(&fval, (void __user *)arg, sizeof(fval))) return -EFAULT;
-            cfg.tp_dist = fval;
-            break;
-        case POTATO_IOCTL_SET_UNDERGROUND:
-            if (copy_from_user(&ival, (void __user *)arg, sizeof(ival))) return -EFAULT;
-            cfg.underground = !!ival;
             break;
         default:
             return -ENOTTY;
@@ -95,10 +51,6 @@ static struct file_operations fops = {
     .unlocked_ioctl = potato_ioctl,
 };
 
-static void write_mem(uintptr_t addr, void *data, size_t len) {
-    pr_info("[Potato] Write to 0x%lx len=%zu\n", addr, len);
-}
-
 static int hack_thread(void *data) {
     pr_info("[Potato] Hack thread started\n");
     while (!kthread_should_stop()) {
@@ -106,10 +58,9 @@ static int hack_thread(void *data) {
             static float angle = 0;
             angle += cfg.spin_sps * 0.3f;
             if (angle > 360) angle -= 360;
-            uintptr_t yaw_addr = 0x796000000 + 0x1A4; // REPLACE WITH REAL OFFSET
-            write_mem(yaw_addr, &angle, sizeof(float));
+            pr_info("[Potato] Spin angle: %f\n", angle);
         }
-        msleep(50);
+        msleep(100);
     }
     return 0;
 }
