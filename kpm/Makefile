@@ -1,7 +1,7 @@
 CROSS_COMPILE ?= aarch64-linux-gnu-
 CC = $(CROSS_COMPILE)gcc
 LD = $(CROSS_COMPILE)ld
-CFLAGS = -nostdlib -fPIC -O2
+CFLAGS = -nostdlib -fPIC -O2 -I/usr/include
 
 all: potato_hack.ko
 
