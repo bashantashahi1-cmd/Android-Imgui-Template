@@ -1,0 +1,6 @@
+id=ff-ultimate
+name=Free Fire Ultimate (KPM+ImGui)
+version=v7a
+versionCode=7
+author=Potato
+description=Kernel-level hack with ImGui overlay. Requires APatch KPM and Magisk Zygisk.
